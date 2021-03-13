@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
 
     [SerializeField] float moveSpeed = 5.0f;
+    [SerializeField] float jumpForce = 5.0f;
     public Rigidbody playerRB;
 
 
@@ -33,5 +34,11 @@ public class PlayerController : MonoBehaviour
 
 
         playerRB.velocity = new Vector3(Input.GetAxis("Horizontal") * moveSpeed, playerRB.velocity.y, Input.GetAxis("Vertical") * moveSpeed);
+
+        //Added jump
+        if (Input.GetButtonDown("Jump"))
+        {
+            playerRB.velocity = new Vector3(playerRB.velocity.x, jumpForce, playerRB.velocity.z);
+        }
     }
 }
