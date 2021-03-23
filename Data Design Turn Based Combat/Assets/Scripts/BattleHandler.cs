@@ -19,7 +19,7 @@ public class BattleHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        currentTurnState = GameState.PLAYER;
+        currentTurnState = GameState.NEUTRAL;
     }
 
     // Update is called once per frame
@@ -28,23 +28,36 @@ public class BattleHandler : MonoBehaviour
         turnStateTracker();
     }
 
+    //KEEP TRACK OF GAME STATES
     private void turnStateTracker()
     {
-        if (currentTurnState == GameState.PLAYER)
+        switch (currentTurnState)
         {
-            //IF PLAYER PLAYED CHANGE STATE TO ENEMY
-        }
+            case (GameState.NEUTRAL):
+                //SWITCH TO PLAYER STATE
+                currentTurnState = GameState.PLAYER; //Game will switch from neutral to player. In future iteration, I will have speed to determine initiative.
+                break;
 
-        else if (currentTurnState == GameState.ENEMY)
-        {
-            //IF ENEMY PLAYED CHANGE STATE TO PLAYER
+            case (GameState.PLAYER):
+                //DO PLAYER ACTION
+                playerAction();
+                break;
 
+            case (GameState.ENEMY):
+                //DO ENEMY ACTION
+                enemyAction();
+                break;
         }
+            
     }
 
-    private void playerBattleTracker()
+    private void playerAction()
     {
-        //PLAYER ACTION
+        //PLAYER ACTIONS CODED HERE AND CALLED IN SWITCH STATEMENT
+    }
 
+    private void enemyAction()
+    {
+        //ENEMY ACTIONS CODED HERE AND CALLED IN SWITCH STATEMENT
     }
 }
