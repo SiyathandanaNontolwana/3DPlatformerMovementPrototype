@@ -69,6 +69,31 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
+    IEnumerator PlayerSpecialAttack()
+    {
+
+        //Deal damage to enemy
+        bool isDead = enemyUnit.TakeDamage(playerUnit.damage + playerUnit.critModifier);
+
+        enemyHUD.setHP(enemyUnit.currentHP);
+
+        yield return new WaitForSeconds(1f);
+
+        //Check if enemy is dead
+        if (isDead)
+        {
+            //End battle
+            currentState = GameState.WIN;
+            EndGame();
+        }
+        else
+        {
+            //Enemy turn
+            currentState = GameState.ENEMY;
+            StartCoroutine(EnemyTurn());
+        }
+    }
+
     IEnumerator PlayerHeal()
     {
 
@@ -136,5 +161,15 @@ public class BattleSystem : MonoBehaviour
         }
         else
             StartCoroutine(PlayerHeal());
+    }
+
+    public void SpecialAttackButton()
+    {
+        if (currentState != GameState.PLAYER)
+        {
+            return;
+        }
+        else
+            StartCoroutine(PlayerSpecialAttack());
     }
 }
