@@ -69,6 +69,19 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
+    IEnumerator PlayerHeal()
+    {
+
+
+        playerUnit.Heal(5);
+
+        playerHUD.setHP(playerUnit.currentHP);
+
+        yield return new WaitForSeconds(1f);
+        currentState = GameState.ENEMY;
+        StartCoroutine(EnemyTurn());
+    }
+
     void EndGame()
     {
         if(currentState == GameState.WIN)
@@ -115,4 +128,13 @@ public class BattleSystem : MonoBehaviour
             StartCoroutine(PlayerAttack());
     }
 
+    public void HealButton()
+    {
+        if (currentState != GameState.PLAYER)
+        {
+            return;
+        }
+        else
+            StartCoroutine(PlayerHeal());
+    }
 }
