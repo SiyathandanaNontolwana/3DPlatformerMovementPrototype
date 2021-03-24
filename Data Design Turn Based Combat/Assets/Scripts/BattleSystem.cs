@@ -8,39 +8,31 @@ public enum GameState { START, PLAYER, ENEMY, WIN, LOSS }
 
 public class BattleSystem : MonoBehaviour
 {
+
     public GameState currentState;
 
-    Unit playerUnit;
-    Unit enemyUnit;
+    public GameObject playerPrefab, enemyPrefab;
 
+    Unit playerUnit, enemyUnit;
 
-    //INFORMATION FOR INSTANTIATION
-    public GameObject playerPrefab;
-    public GameObject enemyPrefab;
+    public BattleHUD playerHUD, enemyHUD; 
 
-    //HUDS
-
-    public BattleHUD playerHUD;
-    public BattleHUD enemyHUD;
-
-    // Start is called before the first frame update
     void Start()
     {
         currentState = GameState.START;
-        StartCoroutine(setUp());
+        StartCoroutine(SetUpBattle());
     }
 
-    IEnumerator setUp()
+    IEnumerator SetUpBattle()
     {
-        //BATTLE SETUP
-        GameObject playerGameObject = Instantiate(playerPrefab, new Vector3(-6.5F, -2F, 0F), Quaternion.identity);
+        GameObject playerGameObject = Instantiate(playerPrefab, new Vector3(-6.5f, -2f, 0f), Quaternion.identity);
         playerUnit = playerGameObject.GetComponent<Unit>();
 
-        GameObject enemyGameObject = Instantiate(enemyPrefab, new Vector3 (6.5F, -2F,0F), Quaternion.identity);
+        GameObject enemyGameObject = Instantiate(enemyPrefab, new Vector3(6.5f, -2f, 0f), Quaternion.identity);
         enemyUnit = enemyGameObject.GetComponent<Unit>();
 
-        playerHUD.setHUD(playerUnit);
-        enemyHUD.setHUD(enemyUnit);
+        playerHUD.SetHUD(playerUnit);
+        enemyHUD.SetHUD(enemyUnit);
 
         yield return new WaitForSeconds(2f);
 
@@ -48,50 +40,61 @@ public class BattleSystem : MonoBehaviour
         PlayerTurn();
     }
 
+    void PlayerTurn()
+    {
+
+    }
+
     IEnumerator PlayerAttack()
     {
+        //Deal damage to enemy
         bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
 
-        enemyHUD.SetHP(enemyUnit.currentHP);
+        enemyHUD.setHP(enemyUnit.currentHP);
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
 
+        //Check if enemy is dead
         if(isDead)
         {
-            //End Game
+            //End battle
             currentState = GameState.WIN;
-            EndBattle();
+            EndGame();
         }
-
         else
         {
-            //enemy turn
+            //Enemy turn
             currentState = GameState.ENEMY;
             StartCoroutine(EnemyTurn());
         }
     }
 
-    void EndBattle()
+    void EndGame()
     {
-        if (currentState == GameState.WIN)
-            Debug.Log("You win");
-        else if (currentState == GameState.LOSS)
-            Debug.Log("You lose");
+        if(currentState == GameState.WIN)
+        {
+            Debug.Log("You Win");
+        }
+        else if(currentState == GameState.LOSS)
+        {
+            Debug.Log("You Lost");
+        }
+
     }
 
     IEnumerator EnemyTurn()
     {
+
         yield return new WaitForSeconds(1f);
 
         bool isDead = playerUnit.TakeDamage(enemyUnit.damage);
 
-        playerHUD.SetHP(playerUnit.currentHP);
-
-        yield return new WaitForSeconds(1f);
+        playerHUD.setHP(playerUnit.currentHP);
 
         if(isDead)
         {
             currentState = GameState.LOSS;
+            EndGame();
         }
         else
         {
@@ -99,21 +102,17 @@ public class BattleSystem : MonoBehaviour
             PlayerTurn();
         }
 
-    }
-
-    void PlayerTurn()
-    {
 
     }
 
-    public void OnAttackButton()
+    public void AttackButton()
     {
-        if(currentState != GameState.PLAYER)
+        if (currentState != GameState.PLAYER)
         {
             return;
         }
-
-        StartCoroutine(PlayerAttack());
-
+        else
+            StartCoroutine(PlayerAttack());
     }
+
 }
