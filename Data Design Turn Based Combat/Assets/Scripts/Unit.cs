@@ -7,14 +7,16 @@ public class Unit : MonoBehaviour
     public string unitName;
 
     public int damage;
+    public int healAmount;
     public int critModifier;
+    public int critAmount = 0;
 
     public int maxHP;
     public int currentHP;
 
     private void Start()
     {
-        critModifier = damage * 2;
+        critModifier = damage * critAmount;
     }
 
     public bool TakeDamage(int damage)

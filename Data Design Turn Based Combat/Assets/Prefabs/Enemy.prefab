@@ -45,7 +45,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitName: Enemy
-  damage: 10
+  damage: 3
+  healAmount: 10
+  critModifier: 0
+  critAmount: 3
   maxHP: 100
   currentHP: 100
 --- !u!1 &8971865145009564062
