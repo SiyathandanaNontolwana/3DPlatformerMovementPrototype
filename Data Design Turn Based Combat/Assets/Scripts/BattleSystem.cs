@@ -15,7 +15,10 @@ public class BattleSystem : MonoBehaviour
 
     Unit playerUnit, enemyUnit;
 
-    public BattleHUD playerHUD, enemyHUD; 
+    public BattleHUD playerHUD, enemyHUD;
+
+    private bool critHit = false;
+    
 
     void Start()
     {
@@ -71,9 +74,19 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator PlayerSpecialAttack()
     {
+        Randomizer(playerUnit.critAmount);
 
+        if(critHit == true)
+        {
+         enemyUnit.TakeDamage(playerUnit.damage + playerUnit.critModifier);
+        }
+        else if(critHit == false)
+        {
+       enemyUnit.TakeDamage(0);
+        }
+        
         //Deal damage to enemy
-        bool isDead = enemyUnit.TakeDamage(playerUnit.damage + playerUnit.critModifier);
+        bool isDead = enemyUnit.TakeDamage(0);
 
         enemyHUD.setHP(enemyUnit.currentHP);
 
@@ -112,10 +125,12 @@ public class BattleSystem : MonoBehaviour
         if(currentState == GameState.WIN)
         {
             Debug.Log("You Win");
+
         }
         else if(currentState == GameState.LOSS)
         {
             Debug.Log("You Lost");
+
         }
 
     }
@@ -171,5 +186,18 @@ public class BattleSystem : MonoBehaviour
         }
         else
             StartCoroutine(PlayerSpecialAttack());
+    }
+
+    private bool Randomizer(int randomNum)
+    {
+        randomNum = (int)(Random.Range(1f, 20f));
+        if (randomNum >= 10f)
+        {
+            critHit = true;
+            return (true);
+        }
+        else
+            critHit = false;
+        return(false);
     }
 }
