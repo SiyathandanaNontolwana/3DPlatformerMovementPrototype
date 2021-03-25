@@ -48,9 +48,9 @@ MonoBehaviour:
   damage: 3
   healAmount: 10
   critModifier: 0
-  critAmount: 3
-  maxHP: 100
-  currentHP: 100
+  critAmount: 2
+  maxHP: 200
+  currentHP: 200
 --- !u!1 &8971865145009564062
 GameObject:
   m_ObjectHideFlags: 0

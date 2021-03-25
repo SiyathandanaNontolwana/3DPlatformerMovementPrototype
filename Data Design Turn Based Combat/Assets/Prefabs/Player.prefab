@@ -45,10 +45,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitName: Player
-  damage: 10
-  healAmount: 5
+  damage: 5
+  healAmount: 10
   critModifier: 0
-  critAmount: 5
+  critAmount: 4
   maxHP: 30
   currentHP: 30
 --- !u!1 &8270805277077956182
